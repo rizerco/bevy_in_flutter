@@ -14,7 +14,7 @@ Then, from the `flutter` directory, run `flutter run --release` and run it on a 
 
 ## Screenshot
 
-![A screenshot of the demo running on an iPhone XS](screenshot.png)
+<img alt="A screenshot of the demo running on an iPhone XS" src="screenshot.png" width="300px"/>
 
 ## Performance
 
