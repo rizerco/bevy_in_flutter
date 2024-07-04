@@ -12,7 +12,7 @@ pub struct AppViews {
 impl AppViews {
     pub fn create_window(
         &mut self,
-        #[cfg(target_os = "ios")] view_obj: super::IOSViewObj,
+        #[cfg(target_vendor = "apple")] view_obj: super::IOSViewObj,
         #[cfg(target_os = "android")] view_obj: super::AndroidViewObj,
         entity: Entity,
     ) -> &AppViewWindow {

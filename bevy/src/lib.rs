@@ -1,22 +1,22 @@
 use bevy::prelude::*;
 
-#[cfg(any(target_os = "android", target_os = "ios"))]
+#[cfg(any(target_os = "android", target_vendor = "apple"))]
 use bevy::ecs::{
     entity::Entity,
     system::{Commands, Query, SystemState},
 };
-#[cfg(any(target_os = "android", target_os = "ios"))]
+#[cfg(any(target_os = "android", target_vendor = "apple"))]
 use bevy::input::{
     keyboard::{Key, KeyboardInput},
     ButtonState,
 };
 
-#[cfg(any(target_os = "android", target_os = "ios"))]
+#[cfg(any(target_os = "android", target_vendor = "apple"))]
 mod app_view;
 
-#[cfg(any(target_os = "android", target_os = "ios"))]
+#[cfg(any(target_os = "android", target_vendor = "apple"))]
 mod ffi;
-#[cfg(any(target_os = "android", target_os = "ios"))]
+#[cfg(any(target_os = "android", target_vendor = "apple"))]
 pub use ffi::*;
 
 #[cfg(target_os = "android")]
@@ -39,7 +39,7 @@ pub fn create_breakout_app(
     #[allow(unused_mut)]
     let mut default_plugins = DefaultPlugins.build();
 
-    #[cfg(any(target_os = "android", target_os = "ios"))]
+    #[cfg(any(target_os = "android", target_vendor = "apple"))]
     {
         default_plugins = default_plugins
             .disable::<WinitPlugin>()
@@ -81,7 +81,7 @@ pub fn create_breakout_app(
         .insert_resource(ClearColor(Color::srgb(0.8, 0.4, 0.6)))
         .add_plugins(default_plugins);
 
-    #[cfg(any(target_os = "android", target_os = "ios"))]
+    #[cfg(any(target_os = "android", target_vendor = "apple"))]
     bevy_app.add_plugins(app_view::AppViewPlugin);
 
     // bevy_app.add_plugins(breakout_game::BreakoutGamePlugin);
@@ -92,7 +92,7 @@ pub fn create_breakout_app(
     // in the App manually.
     // https://github.com/bevyengine/bevy/issues/7576
     // bevy 0.11 changed: https://github.com/bevyengine/bevy/pull/8336
-    #[cfg(any(target_os = "android", target_os = "ios"))]
+    #[cfg(any(target_os = "android", target_vendor = "apple"))]
     {
         use bevy::app::PluginsState;
         if bevy_app.plugins_state() == PluginsState::Ready {}
@@ -103,7 +103,7 @@ pub fn create_breakout_app(
     bevy_app
 }
 
-#[cfg(any(target_os = "android", target_os = "ios"))]
+#[cfg(any(target_os = "android", target_vendor = "apple"))]
 pub(crate) fn change_input(app: &mut App, key_code: KeyCode, state: ButtonState) {
     let mut windows_system_state: SystemState<Query<(Entity, &mut Window)>> =
         SystemState::from_world(app.world_mut());
@@ -123,7 +123,7 @@ pub(crate) fn change_input(app: &mut App, key_code: KeyCode, state: ButtonState)
     }
 }
 
-#[cfg(any(target_os = "android", target_os = "ios"))]
+#[cfg(any(target_os = "android", target_vendor = "apple"))]
 #[allow(clippy::type_complexity)]
 pub(crate) fn close_bevy_window(mut app: Box<App>) {
     let mut windows_state: SystemState<(

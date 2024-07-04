@@ -22,7 +22,7 @@ impl WindowId {
     }
 }
 
-#[cfg_attr(target_os = "ios", path = "ios.rs")]
+#[cfg_attr(target_vendor = "apple", path = "ios.rs")]
 #[cfg_attr(target_os = "android", path = "android.rs")]
 mod view;
 pub use view::*;
@@ -65,7 +65,7 @@ impl Plugin for AppViewPlugin {
 
 #[allow(unused, clippy::type_complexity)]
 pub fn create_bevy_window(app: &mut App) {
-    #[cfg(target_os = "ios")]
+    #[cfg(target_vendor = "apple")]
     let view_obj = app
         .world_mut()
         .remove_non_send_resource::<IOSViewObj>()

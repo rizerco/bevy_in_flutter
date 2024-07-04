@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -57,6 +59,10 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
+  double angle = 0.0;
+
+  double scale = 1.0;
+
   void _incrementCounter() {
     setState(() {
       // This call to setState tells the Flutter framework that something has
@@ -86,14 +92,49 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: const UiKitView(
-        viewType: 'bevy_view',
+      body: Transform.rotate(
+        angle: angle,
+        child: Transform.scale(
+          scale: scale,
+          child: const UiKitView(
+            viewType: 'bevy_view',
+          ),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
+      bottomNavigationBar: SafeArea(
+        child: SizedBox(
+          height: 100.0,
+          child: Column(
+            children: [
+              Slider(
+                min: 0.0,
+                max: pi,
+                value: angle,
+                onChanged: (double value) {
+                  setState(() {
+                    angle = value;
+                  });
+                },
+              ),
+              Slider(
+                min: 0.1,
+                max: 10.0,
+                value: scale,
+                onChanged: (double value) {
+                  setState(() {
+                    scale = value;
+                  });
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

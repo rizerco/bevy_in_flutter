@@ -1,3 +1,5 @@
 #include "Generated.xcconfig"
 
 LIBRARY_SEARCH_PATHS = $(inherited) $(PROJECT_DIR)/libs/debug
+
+OTHER_LDFLAGS = -weak_framework SwiftUI

@@ -2,3 +2,5 @@
 
 LIBRARY_SEARCH_PATHS = $(inherited) $(PROJECT_DIR)/libs/release
 
+OTHER_LDFLAGS = -weak_framework SwiftUI
+
