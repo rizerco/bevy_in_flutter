@@ -1,8 +1,8 @@
 use core_graphics::geometry::CGRect;
 use objc::{runtime::Object, *};
 use raw_window_handle::{
-    DisplayHandle, HandleError, HasDisplayHandle, HasWindowHandle, RawDisplayHandle,
-    RawWindowHandle, UiKitDisplayHandle, UiKitWindowHandle, WindowHandle,
+    AppKitWindowHandle, DisplayHandle, HandleError, HasDisplayHandle, HasWindowHandle,
+    RawDisplayHandle, RawWindowHandle, UiKitDisplayHandle, UiKitWindowHandle, WindowHandle,
 };
 
 #[derive(Debug, Copy, Clone)]
@@ -40,19 +40,32 @@ impl AppView {
     }
 
     pub fn logical_resolution(&self) -> (f32, f32) {
-        let s: CGRect = unsafe { msg_send![self.view, frame] };
+        let s: CGRect = if cfg!(target_os = "ios") {
+            unsafe { msg_send![self.view, frame] }
+        } else {
+            unsafe { msg_send![self.view, getSize] }
+        };
         (s.size.width as f32, s.size.height as f32)
     }
 }
 
 impl HasWindowHandle for AppView {
     fn window_handle(&self) -> Result<WindowHandle, HandleError> {
-        Ok(unsafe {
-            WindowHandle::borrow_raw(RawWindowHandle::UiKit(UiKitWindowHandle::new({
-                let ui_view = self.view as _;
-                std::ptr::NonNull::new(ui_view).unwrap()
-            })))
-        })
+        let window_handler = unsafe {
+            let window_handler = if cfg!(target_os = "ios") {
+                WindowHandle::borrow_raw(RawWindowHandle::UiKit(UiKitWindowHandle::new({
+                    let ui_view = self.view as _;
+                    std::ptr::NonNull::new(ui_view).unwrap()
+                })))
+            } else {
+                WindowHandle::borrow_raw(RawWindowHandle::AppKit(AppKitWindowHandle::new({
+                    let ui_view = self.view as _;
+                    std::ptr::NonNull::new(ui_view).unwrap()
+                })))
+            };
+            window_handler
+        };
+        Ok(window_handler)
     }
 }
 

@@ -22,7 +22,7 @@ impl WindowId {
     }
 }
 
-#[cfg_attr(target_vendor = "apple", path = "ios.rs")]
+#[cfg_attr(target_vendor = "apple", path = "apple.rs")]
 #[cfg_attr(target_os = "android", path = "android.rs")]
 mod view;
 pub use view::*;
